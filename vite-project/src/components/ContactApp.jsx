@@ -2,7 +2,7 @@
 
 import React from "react";
 import ContactList from "./ContactList";
-import { getData } from "../utils/data.js";
+import { getContacts } from "../utils/data.js";
 import ContactInput from "./ContactInput";
 
 class ContactApp extends React.Component{
@@ -10,7 +10,7 @@ class ContactApp extends React.Component{
     super(props)
 
     this.state = {
-      contacts: getData()
+      contacts: getContacts()
     }
 
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
