@@ -1,5 +1,4 @@
 import React from 'react';
-import React from 'react';
 import ContactList from '../components/ContactList';
 import { deleteContact, getContacts } from '../utils/data';
 
