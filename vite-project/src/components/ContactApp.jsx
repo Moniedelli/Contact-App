@@ -6,6 +6,7 @@ import AddPage from '../page/AddPage';
 import RegisterPage from '../page/RegisterPage';
 import LoginPage from '../page/LoginPage';
 import { getUserLogged, putAccessToken } from '../utils/api';
+import { LocaleProvider } from '../context/LocaleContext';
 
 class ContactApp extends React.Component {
   constructor(props) {
@@ -14,6 +15,22 @@ class ContactApp extends React.Component {
     this.state = {
       authedUser: null,
       initializing: true,
+      localeContext: {
+        locale: localStorage.getItem('locale') || 'id',
+        toggleLocale: () => {
+          this.setState((prevState) => {
+            const newLocale = prevState.localeContext.locale === 'id' ? 'en' : 'id';
+            localStorage.setItem('locale', newLocale);
+
+            return {
+              localeContext: {
+                ...prevState.localeContext,
+                locale: newLocale
+              }
+            }
+          })
+        }
+      }
     };
 
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
@@ -59,24 +76,27 @@ class ContactApp extends React.Component {
 
     if (this.state.authedUser === null) {
       return (
-        <div className='contact-app'>
-          <header className='contact-app__header'>
-            <h1>Aplikasi Kontak</h1>
-          </header>
-          <main>
-            <Routes>
-              <Route path="/*" element={<LoginPage loginSuccess={this.onLoginSuccess} />} />
-              <Route path="/register" element={<RegisterPage />} />
-            </Routes>
-          </main>
-        </div>
+        <LocaleProvider value={this.state.localeContext}>
+          <div className='contact-app'>
+            <header className='contact-app__header'>
+              <h1>Aplikasi Kontak</h1>
+            </header>
+            <main>
+              <Routes>
+                <Route path="/*" element={<LoginPage loginSuccess={this.onLoginSuccess} />} />
+                <Route path="/register" element={<RegisterPage />} />
+              </Routes>
+            </main>
+          </div>
+        </LocaleProvider>
       )
     }
     
     return (
-      <div className="contact-app">
+      <LocaleProvider value={this.state.localeContext}>
+        <div className="contact-app">
         <header className='contact-app__header'>
-          <h1>Aplikasi Kontak</h1>
+          <h1>{this.state.localeContext.locale === 'id' ? 'Aplikasi Kontak' : 'Contact App'}</h1>
           <Navigation logout={this.onLogout} name={this.state.authedUser.name} />
         </header>
         <main>
@@ -86,6 +106,7 @@ class ContactApp extends React.Component {
           </Routes>
         </main>
       </div>
+      </LocaleProvider>
     );
   }
 }
