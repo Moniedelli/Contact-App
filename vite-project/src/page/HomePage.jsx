@@ -4,14 +4,14 @@ import { deleteContact } from '../utils/api';
 import SearchBar from '../components/SearchBar';
 import { useSearchParams } from 'react-router-dom';
 import { getContacts } from '../utils/api';
-import LocaleContext, { LocaleConsumer } from '../context/LocaleContext';
+import LocaleContext from '../context/LocaleContext';
 
 function HomePage() {
   const [ searchParams, setSearchParams ] = useSearchParams();
 
   const [ contacts, setContacts ] = React.useState([]);
   const [ keyword, setKeyword ] = React.useState(() => { 
-    return searchParams.get(keyword) || '' 
+    return searchParams.get('keyword') || '' 
   })
   const { locale } = React.useContext(LocaleContext);
 
